@@ -46,8 +46,7 @@ class PDMWriter:
             pdm = pdm.upper()
 
             if len(pdm) > 40:
-                raise ValueError("A descrição gerada excede 40 caracteres.")
-
+                pdm = pdm[:40]
             return pdm
         except Exception as e:
             print(f"Error: {e}")

@@ -14,6 +14,7 @@ from app.core.security import request_limiter
 
 load_dotenv()
 openai_key = os.getenv("OPEN_AI_KEY")
+REQUEST_LIMIT = os.getenv("REQUEST_LIMIT", "100/day")
 limiter = request_limiter.get_limiter()
 pdm_writer = PDMWriter(api_key=openai_key)
 
@@ -47,7 +48,7 @@ async def status():
 
 
 @app.post("/pdm", tags=["PDM"])
-@limiter.limit("10/minute")
+@limiter.limit(REQUEST_LIMIT)
 async def get_pdm(payload: PDMRequest, request: Request):
     try:
         pdm = pdm_writer.write_pdm(payload.description)
